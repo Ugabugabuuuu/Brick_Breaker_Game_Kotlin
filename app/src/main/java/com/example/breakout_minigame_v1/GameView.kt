@@ -23,6 +23,7 @@ class GameView (context: Context, attrs: AttributeSet?) : View(context, attrs) {
     private var currentLives = maxLives
     private val gameManager: GameManager
     private val topBarZoneOfset = 180f
+    //a
 
 
     init {
