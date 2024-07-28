@@ -8,6 +8,8 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import android.widget.Button
+import androidx.fragment.app.FragmentActivity
 import kotlin.math.log
 
 class GameView (context: Context, attrs: AttributeSet?) : View(context, attrs) {
@@ -23,16 +25,15 @@ class GameView (context: Context, attrs: AttributeSet?) : View(context, attrs) {
     private var currentLives = maxLives
     private val gameManager: GameManager
     private val topBarZoneOfset = 180f
-    //a
-
+    private var gameOver = false
 
     init {
         background = BitmapFactory.decodeResource(context.resources, R.drawable.game_background)
 
         val ofset = 300
 
-        val brickPerRow = 6
-        val brickRows = 2
+        val brickPerRow = 3
+        val brickRows = 1
         val tmpBrick: Brick = Brick(context, 0, 0)
         val rowWidth = brickPerRow * tmpBrick.getBrickWidth() + (brickPerRow - 1) * 10
         val startX = (screenWidth - rowWidth) / 2
@@ -48,7 +49,7 @@ class GameView (context: Context, attrs: AttributeSet?) : View(context, attrs) {
         {
             hearts.add(Heart(context, i* (tmpHeart.size + 20), 50))
         }
-        gameManager = GameManager(padle, bricks, ball, this, screenWidth, screenHeight)
+        gameManager = GameManager(context, padle, bricks, ball, this, screenWidth, screenHeight)
     }
 
      override fun onDraw(canvas: Canvas) {
@@ -69,6 +70,7 @@ class GameView (context: Context, attrs: AttributeSet?) : View(context, attrs) {
             brick.draw(canvas, paint)
         }
 
+
          invalidate()
          gameManager.update()
     }
@@ -87,14 +89,32 @@ class GameView (context: Context, attrs: AttributeSet?) : View(context, attrs) {
     fun loseLife() {
         currentLives--
         if (currentLives <= 0) {
-            endGame()
+            if(!gameOver)
+            {
+                endGame()
+                gameOver = true;
+            }
+
         } else {
             resetBall()
         }
     }
 
     private fun endGame() {
+        ball.speedy = 0f
+        ball.speedx = 0f
 
+        val activity = context as FragmentActivity
+        val endGameDialog = EndGameFragment.newInstance()
+        endGameDialog.show(activity.supportFragmentManager, "endGameDialog")
+    }
+    public fun nextLevel()
+    {
+        ball.speedy = 0f
+        ball.speedx = 0f
+        val activity = context as FragmentActivity
+        val nextLevelDialog = NextLevelFragment.newInstance()
+        nextLevelDialog.show(activity.supportFragmentManager, "nextLevelFragment")
     }
     fun resetBall()
     {

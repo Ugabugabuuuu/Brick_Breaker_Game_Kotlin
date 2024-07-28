@@ -1,6 +1,9 @@
 package com.example.breakout_minigame_v1
+import android.content.Context
+import android.media.MediaPlayer
 
 class GameManager (
+    private val context: Context,
     private val padle: Padle,
     private val bricks: MutableList<Brick>,
     private val ball: Ball,
@@ -8,6 +11,11 @@ class GameManager (
     private val screenWidth: Int,
     private val screenHeight: Int
 ){
+    private var destroyedBricks = 0
+    private var nextLevelShown = false
+    private val friction = 1f
+    private var mMediaPlayer: MediaPlayer? = null
+    private var soundPlaying = false
     fun update()
     {
         ball.update()
@@ -19,23 +27,31 @@ class GameManager (
         if(ballPadleColided())
         {
             ball.speedy = -Math.abs(ball.speedy)
+            playSound()
         }
 
         for(brick in bricks)
         {
             if(ballBrickColided(brick))
             {
-                ball.speedy = -ball.speedy
+                playSound()
+                ball.speedy *= -1
+                ball.x += padle.velocity * friction
                 ball.y = ball.y + brick.getBrickHeight()
                 if (!brick.hit()) {
                     ball.increaseSped(2)
+                    destroyedBricks++
                 }
                 break;
             }
         }
-        if(ballFallingOffBottom())
-        {
+        if(ballFallingOffBottom()) {
             gameView.loseLife()
+        }
+        if(destroyedBricks == 3 && !nextLevelShown)
+        {
+            gameView.nextLevel()
+            nextLevelShown = true;
         }
 
     }
@@ -61,6 +77,28 @@ class GameManager (
     {
         return ball.y + ball.radius > screenHeight
     }
+    fun playSound() {
+        if (mMediaPlayer == null) {
+            mMediaPlayer = MediaPlayer.create(context, R.raw.ball_hit_audio_sound)
+            mMediaPlayer?.setOnCompletionListener {
+                mMediaPlayer?.reset()
+                mMediaPlayer?.release()
+                mMediaPlayer = null
+            }
+        }
 
+        if (mMediaPlayer?.isPlaying == false) {
+            mMediaPlayer?.start()
+        }
+    }
+    fun stopSound() {
+        mMediaPlayer?.let {
+            if (it.isPlaying) {
+                it.stop()
+            }
+            it.release()
+            mMediaPlayer = null
+        }
+    }
 
 }

@@ -3,13 +3,14 @@ package com.example.breakout_minigame_v1
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import kotlin.random.Random
 
 class Ball (private val screenWidth: Int, private val screenHeight: Int){
-    var x = screenWidth/2f
+    var x = Random.nextInt(screenWidth/2f.toInt()).toFloat()
     var y = screenHeight/2f
     var radius = 30f
-    var speedx = 10f
-    var speedy = 10f
+    var speedx = 5f
+    var speedy = 5f
 
     fun draw(canvas: Canvas?, paint: Paint)
     {
