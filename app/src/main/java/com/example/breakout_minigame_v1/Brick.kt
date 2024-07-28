@@ -9,8 +9,8 @@ import kotlin.random.Random
 import com.example.breakout_minigame_v1.R
 
 class Brick(context: Context, var x: Int, var y: Int)  {
-    var width = 160
-    var height = 90
+    private var width = 160
+    private var height = 90
     var isVisible = true;
     var hitCount = 0
 
@@ -40,16 +40,13 @@ class Brick(context: Context, var x: Int, var y: Int)  {
         val scaledBitmap = Bitmap.createScaledBitmap(currentBitmap, width,height, false)
         canvas?.drawBitmap(scaledBitmap, x.toFloat(), y.toFloat(), paint)
     }
-    fun hit(): Boolean
-    {
+    fun hit(): Boolean {
         hitCount++
-        if(hitCount==1)
-        {
+        if (hitCount == 1) {
             currentBitmap = crackedTileBìtmap
-        }
-        else if(hitCount > 2)
-        {
+        } else if (hitCount >= 2) {
             isVisible = false
+
         }
         return isVisible
     }

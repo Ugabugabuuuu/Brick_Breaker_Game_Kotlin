@@ -8,7 +8,8 @@ class Ball (private val screenWidth: Int, private val screenHeight: Int){
     var x = screenWidth/2f
     var y = screenHeight/2f
     var radius = 30f
-    var speed = 10f
+    var speedx = 10f
+    var speedy = 10f
 
     fun draw(canvas: Canvas?, paint: Paint)
     {
@@ -18,19 +19,20 @@ class Ball (private val screenWidth: Int, private val screenHeight: Int){
     }
     fun update()
     {
-        x+=speed
-        y+=speed
+        x+=speedx
+        y+=speedy
 
         if (x <= radius || x >= screenWidth - radius) {
-            speed = -speed
+            speedx = -speedx
         }
-        if (y <= radius) {
-            speed = Math.abs(speed)
+        if (y < 180) {
+            speedy= -speedy
         }
     }
     fun increaseSped(increase: Int)
     {
-        speed+=increase
+        //speedx+=increase
+        speedy+=increase
     }
 
 }
