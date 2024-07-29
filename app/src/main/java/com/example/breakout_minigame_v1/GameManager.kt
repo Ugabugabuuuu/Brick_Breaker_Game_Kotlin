@@ -21,6 +21,8 @@ class GameManager (
 
     fun update()
     {
+        if(gameView.gameOver())
+            return
         ball.update()
         handleCollision()
 
@@ -42,8 +44,6 @@ class GameManager (
             {
                 playSound()
                 ball.speedy = -ball.speedy
-               // ball.x += padle.velocity * friction
-                ball.y = ball.y + brick.getBrickHeight()
                 if (!brick.hit()) {
                     ball.increaseSped(2)
                     destroyedBricks++
@@ -56,11 +56,6 @@ class GameManager (
 
         if(ballFallingOffBottom()) {
             gameView.loseLife()
-        }
-        if(destroyedBricks == 12 && !nextLevelShown)
-        {
-            gameView.nextLevel()
-            nextLevelShown = true;
         }
 
     }
@@ -108,6 +103,10 @@ class GameManager (
             it.release()
             mMediaPlayer = null
         }
+    }
+    fun getDestroydBricks() : Int
+    {
+        return destroyedBricks
     }
 
 }
