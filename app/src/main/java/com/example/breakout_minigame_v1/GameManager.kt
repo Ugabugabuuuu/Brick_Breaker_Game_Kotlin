@@ -1,5 +1,7 @@
 package com.example.breakout_minigame_v1
 import android.content.Context
+import android.graphics.Color
+import android.graphics.Paint
 import android.media.MediaPlayer
 
 class GameManager (
@@ -16,6 +18,7 @@ class GameManager (
     private val friction = 1f
     private var mMediaPlayer: MediaPlayer? = null
     private var soundPlaying = false
+
     fun update()
     {
         ball.update()
@@ -26,7 +29,10 @@ class GameManager (
     {
         if(ballPadleColided())
         {
-            ball.speedy = -Math.abs(ball.speedy)
+            val hitPosition = (ball.x - padle.x) / padle.width
+            val angle = (hitPosition - 0.5f) * Math.PI / 3.0
+            ball.speedx  = ball.speedy * Math.sin(angle).toFloat()
+            ball.speedy *= -1;
             playSound()
         }
 
@@ -35,20 +41,23 @@ class GameManager (
             if(ballBrickColided(brick))
             {
                 playSound()
-                ball.speedy *= -1
-                ball.x += padle.velocity * friction
+                ball.speedy = -ball.speedy
+               // ball.x += padle.velocity * friction
                 ball.y = ball.y + brick.getBrickHeight()
                 if (!brick.hit()) {
                     ball.increaseSped(2)
                     destroyedBricks++
+                    gameView.increaseScore(1);
                 }
                 break;
             }
         }
+
+
         if(ballFallingOffBottom()) {
             gameView.loseLife()
         }
-        if(destroyedBricks == 3 && !nextLevelShown)
+        if(destroyedBricks == 12 && !nextLevelShown)
         {
             gameView.nextLevel()
             nextLevelShown = true;

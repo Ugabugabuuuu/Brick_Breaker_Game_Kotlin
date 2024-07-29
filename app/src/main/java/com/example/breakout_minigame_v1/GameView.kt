@@ -26,14 +26,17 @@ class GameView (context: Context, attrs: AttributeSet?) : View(context, attrs) {
     private val gameManager: GameManager
     private val topBarZoneOfset = 180f
     private var gameOver = false
-
+    public var score = 0;
+    private var scoreReset = false
     init {
+        if(scoreReset)
+            score = 0
         background = BitmapFactory.decodeResource(context.resources, R.drawable.game_background)
 
         val ofset = 300
 
-        val brickPerRow = 3
-        val brickRows = 1
+        val brickPerRow = 6
+        val brickRows = 2
         val tmpBrick: Brick = Brick(context, 0, 0)
         val rowWidth = brickPerRow * tmpBrick.getBrickWidth() + (brickPerRow - 1) * 10
         val startX = (screenWidth - rowWidth) / 2
@@ -44,6 +47,7 @@ class GameView (context: Context, attrs: AttributeSet?) : View(context, attrs) {
                 bricks.add(Brick(context, x, y))
             }
         }
+
         val tmpHeart: Heart = Heart(context,0,0)
         for(i in 0 until maxLives)
         {
@@ -69,6 +73,12 @@ class GameView (context: Context, attrs: AttributeSet?) : View(context, attrs) {
         {
             brick.draw(canvas, paint)
         }
+
+         val scorePaint = Paint()
+         scorePaint.color = Color.WHITE
+         scorePaint.textSize = 64f
+         scorePaint.textAlign = Paint.Align.RIGHT
+         canvas.drawText("Score: ${score}", screenWidth - 20f, 80f, scorePaint)
 
 
          invalidate()
@@ -103,6 +113,7 @@ class GameView (context: Context, attrs: AttributeSet?) : View(context, attrs) {
     private fun endGame() {
         ball.speedy = 0f
         ball.speedx = 0f
+        scoreReset = true
 
         val activity = context as FragmentActivity
         val endGameDialog = EndGameFragment.newInstance()
@@ -120,5 +131,9 @@ class GameView (context: Context, attrs: AttributeSet?) : View(context, attrs) {
     {
         ball.x = screenWidth/2f
         ball.y = screenHeight/2f
+    }
+    fun increaseScore(points: Int) {
+        score += points
+        invalidate()  // Redraw the view to update the score display
     }
 }
