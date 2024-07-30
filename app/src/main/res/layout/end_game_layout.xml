@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/design_default_color_error"
-        android:text="Restart" />
+        android:text="Retry" />
 
     <Button
         android:id="@+id/main_menu_button"

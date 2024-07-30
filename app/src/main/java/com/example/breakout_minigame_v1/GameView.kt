@@ -35,7 +35,7 @@ class GameView(context: Context, attrs: AttributeSet?, var score: Int) : View(co
         initializeGame()
     }
 
-    private fun initializeGame(resetScore: Boolean = false) {
+    private fun initializeGame() {
         currentLives = maxLives
         bricks.clear()
         val offset = 300
@@ -136,14 +136,6 @@ class GameView(context: Context, attrs: AttributeSet?, var score: Int) : View(co
 
         nextLevelShown = true
     }
-
-    fun nextLevel() {
-
-        resetBall()
-        initializeGame(resetScore = false)
-        invalidate()
-    }
-
     fun increaseScore(points: Int) {
         score += points
         (context as GameActivity).increaseScore(points)

@@ -13,15 +13,9 @@ class Padle (context: Context, private val screenHeight: Int) {
     var y = 0f
     var height = 60
     var width = 300
-    var lastX = 0f
-    var velocity = 0f
-    //val padleAsset: Bitmap
 
     init
     {
-       // padleAsset = BitmapFactory.decodeResource(context.resources, R.drawable.padle)
-        //height = padleAsset.height
-        //width = padleAsset.width
         y = (screenHeight-150).toFloat()
         x = (context.resources.displayMetrics.widthPixels / 2 - width / 2).toFloat()
     }
@@ -29,11 +23,5 @@ class Padle (context: Context, private val screenHeight: Int) {
     {
         paint.color = Color.WHITE
         canvas?.drawRect(x, y, x+width, y+height, paint)
-        //canvas?.drawBitmap(padleAsset, x, y, paint)
-    }
-    fun update()
-    {
-        velocity = x-lastX
-        lastX = x
     }
 }

@@ -32,7 +32,6 @@ class Ball (private val screenWidth: Int, private val screenHeight: Int){
     }
     fun increaseSped(increase: Int)
     {
-        //speedx+=increase
         speedy+=increase
     }
 

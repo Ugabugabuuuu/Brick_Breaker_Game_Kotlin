@@ -14,10 +14,7 @@ class GameManager (
     private val screenHeight: Int
 ){
     private var destroyedBricks = 0
-    private var nextLevelShown = false
-    private val friction = 1f
     private var mMediaPlayer: MediaPlayer? = null
-    private var soundPlaying = false
 
     fun update()
     {
@@ -97,15 +94,6 @@ class GameManager (
 
         if (mMediaPlayer?.isPlaying == false) {
             mMediaPlayer?.start()
-        }
-    }
-    fun stopSound() {
-        mMediaPlayer?.let {
-            if (it.isPlaying) {
-                it.stop()
-            }
-            it.release()
-            mMediaPlayer = null
         }
     }
     fun getDestroydBricks() : Int
