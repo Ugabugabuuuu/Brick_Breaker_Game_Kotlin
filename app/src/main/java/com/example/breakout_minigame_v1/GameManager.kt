@@ -34,7 +34,7 @@ class GameManager (
             val hitPosition = (ball.x - padle.x) / padle.width
             val angle = (hitPosition - 0.5f) * Math.PI / 3.0
             ball.speedx  = ball.speedy * Math.sin(angle).toFloat()
-            ball.speedy *= -1;
+            ball.speedy = -ball.speedy
             playSound()
         }
 
@@ -42,16 +42,20 @@ class GameManager (
         {
             if(ballBrickColided(brick))
             {
-                playSound()
                 ball.speedy = -ball.speedy
                 if (!brick.hit()) {
-                    ball.increaseSped(2)
+                    if(ball.speedy < 0)
+                    ball.increaseSped(-2)
+                    else ball.increaseSped(2)
                     destroyedBricks++
                     gameView.increaseScore(1);
                 }
+
+                playSound()
                 break;
             }
         }
+
 
 
         if(ballFallingOffBottom()) {
